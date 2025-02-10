@@ -1,9 +1,69 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script type="module" src="common.mjs"></script>
-        <script type="module" src="web.mjs"></script>
+        <script defer type="module" src="common.mjs"></script>
+        <script defer type="module" src="web.mjs"></script>
+        <style>
+            #weekdays {
+                width: 100%;
+                display: grid;
+                grid-template-columns: repeat(7, 1fr);                color: #247BA0;
+                }
+                #weekdays div {
+                width: 100px;
+                padding: 10px;
+                margin: 5px;
+                }
+            #calender {
+                background: #f2f2f2;
+                width: 100%;
+                display: grid;
+                grid-template-columns: repeat(7, 1fr);
+            }
+            #calender div.day {
+                width: 100px;
+                padding: 10px;
+                height: 100px;
+                cursor: pointer;
+                box-sizing: border-box;
+                background-color: white;
+                margin: 5px;
+                box-shadow: 0px 0px 3px #CBD4C2;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+            .padding {
+                cursor: default !important;
+                background-color: #FFFCFF !important;
+                box-shadow: none !important;
+                }
+        </style>
     </head>
     <body>
+        <main>
+            <nav id="nav-div">
+                <section id="show-month"></section>
+            </nav>
+            <section id="nav-btns">
+                <button id="backBtn">Back</button>
+                <button id="nextBtn">Next</button>
+            </section>
+            <section>
+                <select name="" id="select-month"></select>
+                <select name="" id="select-year"></select>
+            </section>
+            <div id="weekdays">
+                <div>Monday</div>
+                <div>Tuesday</div>
+                <div>Wednesday</div>
+                <div>Thursday</div>
+                <div>Friday</div>
+                <div>Saturday</div>
+                <div>Sunday</div>
+            </div>
+            <div id="calender">
+            </div>
+        </main>
     </body>
 </html>
