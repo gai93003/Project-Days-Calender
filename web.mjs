@@ -3,7 +3,7 @@
 // Note that when running locally, in order to open a web page which uses modules, you must serve the directory over HTTP e.g. with https://www.npmjs.com/package/http-server
 // You can't open the index.html file using a file:// URL.
 
-import { getGreeting } from "./common.mjs";
+import { getEventDate } from "./common.mjs";
 import daysData from "./days.json" with { type: "json" };
 
 const calender = document.querySelector('#calender');
@@ -26,7 +26,7 @@ const showCalender = () => {
     date.setFullYear(selectedYear, selectedMonth);
 
     if (increaser !== 0) {
-        date.setMonth(new Date().getMonth() + increaser)
+        date.setMonth(new Date().getMonth() + increaser);
     }
 
     const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -45,20 +45,35 @@ const showCalender = () => {
 
     calender.innerHTML = '';
 
-    for(let i = 1; i <= gapToLeave + lastDayOfMonth; i++) {
+    // 🔹 Fetch and filter relevant events for the selected month and year
+    const eventsForMonth = daysData
+        .map(event => ({ event, date: getEventDate(event, selectedYear) }))
+        .filter(({ date }) => date.getMonth() === selectedMonth && date.getFullYear() === selectedYear);
+        
+
+    // 🔹 Store event days in a Map for quick lookup
+    const eventDays = new Map(eventsForMonth.map(({ date, event }) => [date.getDate(), event.name]));
+
+    for (let i = 1; i <= gapToLeave + lastDayOfMonth; i++) {
         const eachDay = document.createElement('div');
         eachDay.classList.add('day');
 
-        if(i > gapToLeave) {
-            eachDay.innerText = i - gapToLeave;
-        }
-        else {
-            eachDay.classList.add('padding')
+        if (i > gapToLeave) {
+            const dayNumber = i - gapToLeave;
+            eachDay.innerText = dayNumber;
+
+            // 🔹 Check if this day has an event and mark it
+            if (eventDays.has(dayNumber)) {
+                eachDay.classList.add('event-day'); // CSS class for highlighting
+                eachDay.title = eventDays.get(dayNumber); // Show event name on hover
+            }
+        } else {
+            eachDay.classList.add('padding');
         }
 
         calender.appendChild(eachDay);
     }
-}
+};
 
 const populateMonth = () => {
     const currentDate = new Date();
